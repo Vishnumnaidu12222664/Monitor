@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Monitorr</title>
+  <title>System Monitor</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -12,7 +12,7 @@
       padding: 0;
       background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
       font-family: 'Orbitron', sans-serif;
-      color: #ff0000;
+      color: #ff3333; /* Bright red text */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -23,10 +23,13 @@
       text-align: center;
       padding: 30px 0 10px;
       font-size: 2em;
+      color: #ff0000; /* Pure red header */
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
     }
     .time-box {
       font-size: 1.5em;
       margin-bottom: 20px;
+      color: #ff5555; /* Slightly softer red */
     }
     .container {
       display: flex;
@@ -41,9 +44,17 @@
       background: #121212;
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); /* Red glow */
       flex: 1 1 300px;
       text-align: center;
+      border: 1px solid #ff0000;
+    }
+    .card h3 {
+      color: #ff5555;
+    }
+    .card p {
+      color: #ff3333;
+      font-size: 1.2em;
     }
     canvas {
       max-width: 200px;
@@ -53,9 +64,13 @@
       margin-top: 60px;
       padding: 20px;
       font-size: 1.2em;
-      border-top: 1px solid #00ff99;
+      border-top: 1px solid #ff0000;
       width: 80%;
       text-align: center;
+      color: #ff5555;
+    }
+    .quote-section strong {
+      color: #ff0000;
     }
   </style>
 </head>
@@ -76,12 +91,12 @@
     </div>
 
     <div class="card">
-      <h3>Disk-Usage</h3>
+      <h3>Disk Usage</h3>
       <canvas id="diskChart"></canvas>
     </div>
 
     <div class="card">
-      <h3>uptime</h3>
+      <h3>Uptime</h3>
       <p>{{ uptime }}</p>
     </div>
   </div>
@@ -109,12 +124,23 @@
         labels: ['Used', 'Free'],
         datasets: [{
           data: [{{ memory }}, {{ 100 - memory }}],
-          backgroundColor: ['#00ff99', '#003322'],
+          backgroundColor: ['#ff0000', '#330000'], // Red and dark red
+          borderColor: ['#ff0000', '#330000'],
         }]
       },
       options: {
-        plugins: { legend: { labels: { color: '#00ff99' } } },
-        responsive: true
+        plugins: { 
+          legend: { 
+            labels: { 
+              color: '#ff3333',
+              font: {
+                family: "'Orbitron', sans-serif"
+              }
+            } 
+          } 
+        },
+        responsive: true,
+        cutout: '70%',
       }
     });
 
@@ -124,12 +150,23 @@
         labels: ['Used', 'Free'],
         datasets: [{
           data: [{{ disk }}, {{ 100 - disk }}],
-          backgroundColor: ['#00ff99', '#003322'],
+          backgroundColor: ['#ff0000', '#330000'], // Red and dark red
+          borderColor: ['#ff0000', '#330000'],
         }]
       },
       options: {
-        plugins: { legend: { labels: { color: '#00ff99' } } },
-        responsive: true
+        plugins: { 
+          legend: { 
+            labels: { 
+              color: '#ff3333',
+              font: {
+                family: "'Orbitron', sans-serif"
+              }
+            } 
+          } 
+        },
+        responsive: true,
+        cutout: '70%',
       }
     });
   </script>
