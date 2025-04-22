@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Monitor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+      font-family: 'Orbitron', sans-serif;
+      color: #00ff99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 30px 0 10px;
+      font-size: 2em;
+    }
+    .time-box {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .card {
+      background: #121212;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 153, 0.4);
+      flex: 1 1 300px;
+      text-align: center;
+    }
+    canvas {
+      max-width: 200px;
+      margin: auto;
+    }
+    .quote-section {
+      margin-top: 60px;
+      padding: 20px;
+      font-size: 1.2em;
+      border-top: 1px solid #00ff99;
+      width: 80%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>Real-Time System Monitor</header>
+
+  <div class="time-box" id="time"></div>
+
+  <div class="container">
+    <div class="card">
+      <h3>CPU Usage</h3>
+      <p>{{ cpu }}%</p>
+    </div>
+
+    <div class="card">
+      <h3>Memory Usage</h3>
+      <canvas id="memoryChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Disk Usage</h3>
+      <canvas id="diskChart"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Uptime</h3>
+      <p>{{ uptime }}</p>
+    </div>
+  </div>
+
+  <div class="quote-section">
+    <strong>Quote of the Day:</strong><br>
+    {{ quote }}
+  </div>
+
+  <script>
+    function updateTime() {
+      const timeElem = document.getElementById("time");
+      const now = new Date();
+      timeElem.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    const memoryCtx = document.getElementById('memoryChart').getContext('2d');
+    const diskCtx = document.getElementById('diskChart').getContext('2d');
+
+    new Chart(memoryCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Used', 'Free'],
+        datasets: [{
+          data: [{{ memory }}, {{ 100 - memory }}],
+          backgroundColor: ['#00ff99', '#003322'],
+        }]
+      },
+      options: {
+        plugins: { legend: { labels: { color: '#00ff99' } } },
+        responsive: true
+      }
+    });
+
+    new Chart(diskCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Used', 'Free'],
+        datasets: [{
+          data: [{{ disk }}, {{ 100 - disk }}],
+          backgroundColor: ['#00ff99', '#003322'],
+        }]
+      },
+      options: {
+        plugins: { legend: { labels: { color: '#00ff99' } } },
+        responsive: true
+      }
+    });
+  </script>
+</body>
+</html>
